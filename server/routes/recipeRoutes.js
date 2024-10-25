@@ -39,11 +39,11 @@ router.post('/', async (req, res) => {
   }
 });
 
-router.delete('/:idMeal', async (req, res) => {
+router.delete('/:idMeal/:userId', async (req, res) => {
   try {
-    const recipe = await Recipe.findOneAndDelete({ idMeal: req.params.idMeal });
+    const recipe = await Recipe.findOneAndDelete({ idMeal: req.params.idMeal, user: req.params.userId });
     if (!recipe) {
-      return res.status(404).json({ message: 'Recipe not found' });
+      return res.status(404).json({ message: 'Recipe not found for this user' });
     }
     res.status(200).json({ message: 'Recipe deleted successfully' });
   } catch (err) {
