@@ -2,6 +2,9 @@
 
 This is a full-stack Recipe Application built with the MERN stack (MongoDB, Express, React, Node.js) and styled with Tailwind CSS. Users can register, log in, and save their favorite recipes, fetched from an external API. The application ensures secure access using JWT-based authentication.
 
+## Live Application
+You can access the live version of the Recipe App here: [Recipe App Live](https://recipe-app-client-three.vercel.app/)
+
 ## Features
 
 - User authentication (register, login, logout) using JWT tokens
