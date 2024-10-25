@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 const Login = () => {
@@ -17,10 +17,13 @@ const Login = () => {
     }
 
     try {
-      const res = await axios.post('http://localhost:5000/api/users/login', { email, password });
+      const res = await axios.post(`${process.env.REACT_APP_BACKEND_BASE_URL}/api/users/login`, { email, password });
       if (res.data.token) {
+        console.log("res.data.user", res.data.user)
+        sessionStorage.setItem('userId', res.data.user._id);
         sessionStorage.setItem('token', res.data.token);
         navigate('/dashboard');
+        window.location.reload();
       } else {
         setError('Login failed, no token received');
       }
@@ -56,7 +59,8 @@ const Login = () => {
           placeholder="Password"
           aria-invalid={error ? "true" : "false"}
         />
-        <button className="w-full bg-pink-500 text-white p-2 rounded">Sign In</button>
+        <button className="w-full bg-pink-500 text-white p-2 rounded">Log In</button>
+        <p className='opacity-75 mt-2'>Don’t have an account? <Link to={'/register'} className='text-pink-500'>Create Account</Link></p>
       </form>
     </div>
   );

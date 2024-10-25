@@ -11,9 +11,9 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
+app.use(morgan("tiny"));
 app.use('/api/users', userRoutes);
 app.use('/api/recipes', recipeRoutes);
-app.use(morgan("tiny"));
 
 const connectDB = async () => {
   try {

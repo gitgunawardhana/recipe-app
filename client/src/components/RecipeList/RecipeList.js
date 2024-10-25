@@ -36,10 +36,12 @@ const RecipeList = () => {
   }, [category]);
 
   const handleSubmit = async (recipe) => {
+    console.log(recipe);
     try {
-      const res = await axios.post('http://localhost:5000/api/recipes', recipe);
+      const res = await axios.post(`${process.env.REACT_APP_BACKEND_BASE_URL}/api/recipes`, recipe);
       const fetchFavorites = async () => {
-        const res = await axios.get('http://localhost:5000/api/recipes');
+        if (sessionStorage.getItem('userId') === null) return;
+        const res = await axios.get(`${process.env.REACT_APP_BACKEND_BASE_URL}/api/recipes/${sessionStorage.getItem('userId')}`);
         setFavorites(res.data);
       };
       fetchFavorites();
@@ -59,7 +61,7 @@ const RecipeList = () => {
           />
           <div className="flex gap-2 items-start">
             <h5 className="text-sm font-medium text-[#00000079] cursor-default" onClick={()=>{openModal(recipe.idMeal)}}>{category}</h5>{" "}
-            <button onClick={()=>{handleSubmit({...recipe, strCategory:category})}}>
+            <button onClick={()=>{handleSubmit({...recipe, strCategory:category, userId:sessionStorage.getItem('userId')})}}>
               {favorites.some(fav => fav.idMeal === recipe.idMeal)?<FaHeart className="text-pink-500" />:
               <FaRegHeart className="text-pink-500" />
               }

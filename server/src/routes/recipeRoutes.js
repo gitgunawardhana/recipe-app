@@ -3,18 +3,13 @@ const axios = require('axios');
 const Recipe = require('../models/Recipe');
 const router = express.Router();
 
-router.get('/categories', async (req, res) => {
-  try {
-    const response = await axios.get('https://www.themealdb.com/api/json/v1/1/categories.php');
-    res.json(response.data.categories);
-  } catch (error) {
-    res.status(500).json({ error: 'Failed to fetch categories' });
-  }
-});
+router.get('/:userId', async (req, res) => {
+  const { userId } = req.params;
 
-router.get('/', async (req, res) => {
+  console.log(userId)
   try {
-    const recipes = await Recipe.find();
+    const query = userId ? { user: userId } : {};
+    const recipes = await Recipe.find(query);
     res.status(200).json(recipes);
   } catch (err) {
     res.status(500).json({ message: 'Server error', error: err.message });
@@ -22,11 +17,11 @@ router.get('/', async (req, res) => {
 });
 
 router.post('/', async (req, res) => {
-  const { strCategory, strMeal, strMealThumb, idMeal } = req.body;
+  const { strCategory, strMeal, strMealThumb, idMeal, userId } = req.body;
   try {
-    let recipe = await Recipe.findOne({ idMeal });
+    let recipe = await Recipe.findOne({ idMeal, user: userId });
     if (recipe) {
-      return res.status(400).json({ message: 'Recipe already exists' });
+      return res.status(400).json({ message: 'Recipe already exists for this user' });
     }
 
     recipe = new Recipe({
@@ -34,6 +29,7 @@ router.post('/', async (req, res) => {
       strMeal,
       strMealThumb,
       idMeal,
+      user:userId
     });
 
     await recipe.save();

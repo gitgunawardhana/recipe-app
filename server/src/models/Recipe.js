@@ -16,8 +16,8 @@ const RecipeSchema = new mongoose.Schema({
   idMeal: {
     type: String,
     required: true,
-    unique: true,  // Ensure that each meal has a unique ID
   },
+  user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
 }, { timestamps: true });
 
 module.exports = mongoose.model('Recipe', RecipeSchema);

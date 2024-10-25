@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Register = () => {
   const [user, setUser] = useState({ name: '', email: '', password: '' });
@@ -10,7 +10,7 @@ const Register = () => {
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:5000/api/users/register', user);
+      await axios.post(`${process.env.REACT_APP_BACKEND_BASE_URL}/api/users/register`, user);
       navigate('/');
     } catch (err) {
       setError('Registration failed');
@@ -44,6 +44,7 @@ const Register = () => {
           placeholder="Password"
         />
         <button className="w-full bg-pink-500 text-white p-2 rounded">Create Account</button>
+        <p className='opacity-75 mt-2'>Already have an account? <Link to={'/'} className='text-pink-500'>Log in</Link></p>
       </form>
     </div>
   );

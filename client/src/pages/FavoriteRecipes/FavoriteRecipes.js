@@ -22,10 +22,11 @@ const FavoriteRecipes = () => {
   const handleSubmit = async (idMeal) => {
     try {
       const res = await axios.delete(
-        `http://localhost:5000/api/recipes/${idMeal}`
+        `${process.env.REACT_APP_BACKEND_BASE_URL}/api/recipes/${idMeal}`
       );
       const fetchFavorites = async () => {
-        const res = await axios.get("http://localhost:5000/api/recipes");
+        if (sessionStorage.getItem('userId') === null) return;
+        const res = await axios.get(`${process.env.REACT_APP_BACKEND_BASE_URL}/api/recipes/${sessionStorage.getItem('userId')}`);
         setFavorites(res.data);
       };
       fetchFavorites();
