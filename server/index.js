@@ -15,6 +15,10 @@ app.use(morgan("tiny"));
 app.use('/api/users', userRoutes);
 app.use('/api/recipes', recipeRoutes);
 
+app.get('/', (req, res) => {
+  res.send('Hello from Express');
+});
+
 const connectDB = async () => {
   try {
     await mongoose.connect(process.env.MONGO_URI);
